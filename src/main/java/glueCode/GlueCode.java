@@ -1,0 +1,24 @@
+package glueCode;
+
+import glueCodeImplementation.GlueCodeImplementation;
+import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
+
+public class GlueCode {
+    GlueCodeImplementation glueCodeImplementation=new GlueCodeImplementation();
+
+    @Given("user navigates to the website abcd")
+    public void user_navigates_to_the_website_abcd() {
+        glueCodeImplementation.SimpleMethod();
+    }
+    @Given("there user logs in through Login Window by using Username as {string} and Password as {string}")
+    public void there_user_logs_in_through_login_window_by_using_username_as_and_password_as(String string, String string2) {
+        // Write code here that turns the phrase above into concrete actions
+        System.out.println("2nd defination");
+    }
+    @Then("login must be successful.")
+    public void login_must_be_successful() {
+        // Write code here that turns the phrase above into concrete actions
+        System.out.println("3rd defination");
+    }
+}
