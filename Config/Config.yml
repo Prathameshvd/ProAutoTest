@@ -1,0 +1,10 @@
+DriverClassName : webdriver.chrome.driver
+DriverClassPath : D:\\Prathamesh\\Selenium\\Supported_JarFiles\\Drivers\\chromedriver_win32\\chromedriver.exe
+
+AppURL : https://admin-demo.nopcommerce.com/login
+UserName : admin@yourstore.com
+Password : admin
+
+DBurl : jdbc:mysql://localhost:3306/Db name should be mentioned here
+DBUserName : root
+DBPassword : root
