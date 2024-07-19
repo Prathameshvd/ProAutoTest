@@ -2,33 +2,39 @@ package glueCode;
 
 import glueCodeImplementation.GlueCodeImplementation;
 import io.cucumber.java.en.Given;
-import io.cucumber.java.en.Then;
 
 import java.io.FileNotFoundException;
 
 public class GlueCode {
     GlueCodeImplementation glueCodeImplementation=new GlueCodeImplementation();
 
+    public GlueCode() throws FileNotFoundException {
+    }
+
     @Given("user navigates to the website nopCommerce")
     public void user_navigates_to_the_website_nop_commerce() throws FileNotFoundException {
-        glueCodeImplementation.appLogin();
+        glueCodeImplementation.appOpen();
     }
     @Given("user login to website")
     public void user_login_to_website() {
-        System.out.println("user login to website");
+        glueCodeImplementation.appLogin();
     }
-    @Given("user click on Customers menu")
+
+    @Given("user click on Customer menu")
     public void user_click_on_customers_menu() {
-        System.out.println("user click on Customers menu");
+        glueCodeImplementation.clickCustomerMenu();
     }
-    @Given("user select Customer option")
+
+    @Given("user select Customers option")
     public void user_select_customer_option() {
-        System.out.println("user select Customer option");
+        glueCodeImplementation.clickCustomersOption();
     }
+
     @Given("user create new customer")
     public void user_create_new_customer() {
-        System.out.println("user create new customer");
+        glueCodeImplementation.createCustomer();
     }
+
     @Given("user search created customer")
     public void user_search_created_customer() {
         System.out.println("user search created customer");
@@ -37,14 +43,17 @@ public class GlueCode {
     public void user_edit_searched_customer() {
         System.out.println("user edit searched customer");
     }
+
     @Given("user store data into database")
     public void user_store_data_into_database() {
         System.out.println("user store data into database");
     }
+
     @Given("user fetch DB export for the newly created customer")
     public void user_fetch_db_export_for_the_newly_created_customer() {
         System.out.println("user fetch DB export for the newly created customer");
     }
+
     @Given("user logout from website")
     public void user_logout_from_website() {
         System.out.println("user logout from website");

@@ -1,5 +1,5 @@
 DriverClassName : webdriver.chrome.driver
-DriverClassPath : D:\\Prathamesh\\Selenium\\Supported_JarFiles\\Drivers\\chromedriver_win32\\chromedriver.exe
+DriverClassPath : D:\\Prathamesh\\Selenium\\Supported_JarFiles\\Drivers\\chromedriver-win64\\chromedriver.exe
 
 AppURL : https://admin-demo.nopcommerce.com/login
 UserName : admin@yourstore.com
