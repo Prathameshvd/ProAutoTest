@@ -1,5 +1,6 @@
 package glueCode;
 
+import com.esotericsoftware.yamlbeans.YamlException;
 import glueCodeImplementation.GlueCodeImplementation;
 import io.cucumber.java.en.Given;
 
@@ -21,7 +22,7 @@ public class GlueCode {
     }
 
     @Given("user click on Customer menu")
-    public void user_click_on_customers_menu() {
+    public void user_click_on_customers_menu() throws YamlException, FileNotFoundException {
         glueCodeImplementation.clickCustomerMenu();
     }
 

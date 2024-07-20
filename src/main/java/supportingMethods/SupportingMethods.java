@@ -1,5 +1,7 @@
 package supportingMethods;
 
+import com.esotericsoftware.yamlbeans.YamlException;
+import com.esotericsoftware.yamlbeans.YamlReader;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.yaml.snakeyaml.Yaml;
@@ -7,6 +9,7 @@ import org.yaml.snakeyaml.Yaml;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.util.Map;
 
 public class SupportingMethods {
@@ -27,5 +30,15 @@ public class SupportingMethods {
         System.setProperty(data.get("DriverClassName"),data.get("DriverClassPath"));
         driver=new ChromeDriver();
         return driver;
+    }
+
+    public String readAsObject(String value) throws FileNotFoundException, YamlException {
+        YamlReader yamlReader = new YamlReader(new FileReader("InputData/Xpath.yml"));
+        Map read = (Map) yamlReader.read();
+
+        //This is still under development
+        System.out.println(read.entrySet());
+        System.out.println(read);
+        return (String) read.get(value);
     }
 }

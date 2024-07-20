@@ -1,5 +1,6 @@
 package glueCodeImplementation;
 
+import com.esotericsoftware.yamlbeans.YamlException;
 import com.github.javafaker.Faker;
 import com.github.javafaker.service.FakeValuesService;
 import com.github.javafaker.service.RandomService;
@@ -51,8 +52,9 @@ public class GlueCodeImplementation {
         System.out.println("User login to website - Completed");
     }
 
-    public void clickCustomerMenu() {
-        driver.findElement(By.xpath("//a[@href='#']//p[contains(text(),'Customers')]")).click();
+    public void clickCustomerMenu() throws YamlException, FileNotFoundException {
+        System.out.println("oooooooooooooooooooo" + supportingMethods.readAsObject("Cust"));
+        driver.findElement(By.xpath(supportingMethods.readAsObject("Cust"))).click();
         System.out.println("User click on Customer menu - Completed");
     }
 

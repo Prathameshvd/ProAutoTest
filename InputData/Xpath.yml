@@ -1,0 +1,5 @@
+Cust :
+  Customer : //a[@href='#']//p[contains(text(),'Customers')]
+
+Diff :
+Customers : //a[@href='/Admin/Customer/List']//p[contains(text(),'Customers')]
