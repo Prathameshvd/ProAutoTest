@@ -32,6 +32,11 @@ public class SupportingMethods {
         return driver;
     }
 
+    public void selectDate(String SelectedDate)
+    {
+
+    }
+
     public String readAsObject(String value) throws FileNotFoundException, YamlException {
         YamlReader yamlReader = new YamlReader(new FileReader("InputData/Xpath.yml"));
         Map read = (Map) yamlReader.read();

@@ -53,7 +53,6 @@ public class GlueCodeImplementation {
     }
 
     public void clickCustomerMenu() throws YamlException, FileNotFoundException {
-        System.out.println("oooooooooooooooooooo" + supportingMethods.readAsObject("Cust"));
         driver.findElement(By.xpath(supportingMethods.readAsObject("Cust"))).click();
         System.out.println("User click on Customer menu - Completed");
     }
@@ -86,6 +85,7 @@ public class GlueCodeImplementation {
 
         //Date
 
+
         driver.findElement(By.id("Company")).sendKeys(faker.company().name());
         driver.findElement(By.id("IsTaxExempt")).click();
         driver.findElement(By.xpath("(//input[@role='searchbox'])[1]")).click();
@@ -95,7 +95,12 @@ public class GlueCodeImplementation {
         new Select(driver.findElement(By.id("VendorId"))).selectByValue("1");
         driver.findElement(By.id("AdminComment")).sendKeys(faker.gameOfThrones().character());
 
-
         System.out.println("User create new customer - Completed");
+    }
+
+    public void appLogout() {
+        driver.findElement(By.partialLinkText("Logo")).click();
+        driver.quit();
+        System.out.println("User logout from website - Completed");
     }
 }

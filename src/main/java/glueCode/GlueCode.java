@@ -57,7 +57,7 @@ public class GlueCode {
 
     @Given("user logout from website")
     public void user_logout_from_website() {
-        System.out.println("user logout from website");
+        glueCodeImplementation.appLogout();
     }
 
 }
