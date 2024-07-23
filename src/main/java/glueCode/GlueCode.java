@@ -47,7 +47,7 @@ public class GlueCode {
 
     @Given("user store data into database")
     public void user_store_data_into_database() {
-        System.out.println("user store data into database");
+        glueCodeImplementation.storeCustomerData();
     }
 
     @Given("user fetch DB export for the newly created customer")

@@ -53,7 +53,8 @@ public class GlueCodeImplementation {
     }
 
     public void clickCustomerMenu() throws YamlException, FileNotFoundException {
-        driver.findElement(By.xpath(supportingMethods.readAsObject("Cust"))).click();
+//        driver.findElement(By.xpath(supportingMethods.readAsObject("Cust"))).click();
+        driver.findElement(By.xpath("//a[@href='#']//p[contains(text(),'Customers')]")).click();
         System.out.println("User click on Customer menu - Completed");
     }
 
@@ -96,6 +97,14 @@ public class GlueCodeImplementation {
         driver.findElement(By.id("AdminComment")).sendKeys(faker.gameOfThrones().character());
 
         System.out.println("User create new customer - Completed");
+    }
+
+    public void storeCustomerData()
+    {
+        supportingMethods.createDbConnection();
+
+        supportingMethods.closeDbConnection();
+        System.out.println("User store data into database - Completed");
     }
 
     public void appLogout() {
