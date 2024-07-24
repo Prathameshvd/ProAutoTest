@@ -14,8 +14,10 @@ import supportingMethods.SupportingMethods;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.sql.SQLOutput;
 import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 public class GlueCodeImplementation {
 
@@ -54,6 +56,7 @@ public class GlueCodeImplementation {
 
     public void clickCustomerMenu() throws YamlException, FileNotFoundException {
 //        driver.findElement(By.xpath(supportingMethods.readAsObject("Cust"))).click();
+        driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
         driver.findElement(By.xpath("//a[@href='#']//p[contains(text(),'Customers')]")).click();
         System.out.println("User click on Customer menu - Completed");
     }
@@ -96,13 +99,26 @@ public class GlueCodeImplementation {
         new Select(driver.findElement(By.id("VendorId"))).selectByValue("1");
         driver.findElement(By.id("AdminComment")).sendKeys(faker.gameOfThrones().character());
 
+        driver.findElement(By.id("Active")).click();
+        driver.findElement(By.xpath("//button[@name='save']")).click();
+
         System.out.println("User create new customer - Completed");
+    }
+
+    public void searchCreatedCustomer() {
+        driver.findElement(By.id("SearchFirstName")).sendKeys("Virat");
+        driver.findElement(By.id("search-customers")).click();
+        driver.findElement(By.xpath("(//a[normalize-space()='Edit'])[1]")).click();
+        System.out.println("User search created customer - Completed");
     }
 
     public void storeCustomerData()
     {
         supportingMethods.createDbConnection();
-
+        WebElement FirstName = driver.findElement(By.id("FirstName"));
+        WebElement LastName = driver.findElement(By.id("LastName"));
+        WebElement Email=driver.findElement(By.id("Email"));
+        supportingMethods.saveCustomer(FirstName.getAttribute("value"),LastName.getAttribute("value"), Email.getAttribute("value"), "Admin");
         supportingMethods.closeDbConnection();
         System.out.println("User store data into database - Completed");
     }

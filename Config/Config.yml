@@ -5,6 +5,6 @@ AppURL : https://admin-demo.nopcommerce.com/login
 UserName : admin@yourstore.com
 Password : admin
 
-DBurl : jdbc:mysql://localhost:3306/Db name should be mentioned here
+DBurl : jdbc:mysql://localhost:3306/nopcommerce
 DBUserName : root
 DBPassword : root

@@ -12,6 +12,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Map;
 
@@ -71,6 +72,20 @@ public class SupportingMethods {
             System.out.println("JDBC Connection Closed Successfully");
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+    }
+
+        public void saveCustomer(String FirstName, String LastName, String Email, String Comment) {
+        try {
+            PreparedStatement preparedStatement4 = con.prepareStatement("Insert into nopcommerce (First_Name, Last_Name, Email, Additional_Details) Values (?,?,?,?)");
+            preparedStatement4.setString(1, FirstName);
+            preparedStatement4.setString(2, LastName);
+            preparedStatement4.setString(3, Email);
+            preparedStatement4.setString(4, Comment);
+            preparedStatement4.execute();
+            System.out.println("Customer details stored successfully");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 }

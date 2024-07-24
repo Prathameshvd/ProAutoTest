@@ -38,11 +38,11 @@ public class GlueCode {
 
     @Given("user search created customer")
     public void user_search_created_customer() {
-        System.out.println("user search created customer");
+        glueCodeImplementation.searchCreatedCustomer();
     }
     @Given("user edit searched customer")
     public void user_edit_searched_customer() {
-        System.out.println("user edit searched customer");
+//        System.out.println("user edit searched customer");
     }
 
     @Given("user store data into database")
@@ -52,7 +52,7 @@ public class GlueCode {
 
     @Given("user fetch DB export for the newly created customer")
     public void user_fetch_db_export_for_the_newly_created_customer() {
-        System.out.println("user fetch DB export for the newly created customer");
+        glueCodeImplementation.searchCreatedCustomer();
     }
 
     @Given("user logout from website")
