@@ -9,12 +9,13 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 import org.yaml.snakeyaml.Yaml;
+import supportingMethods.CustomerDummyDatabase;
 import supportingMethods.SupportingMethods;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.sql.SQLOutput;
+import java.sql.ResultSet;
 import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -78,17 +79,19 @@ public class GlueCodeImplementation {
         FakeValuesService fakeValuesService = new FakeValuesService(
                 new Locale("en-GB"), new RandomService());
         String email = fakeValuesService.bothify("????##@gmail.com");
-        System.out.println("email");
         Email.sendKeys(email);
 
         Password.sendKeys("root");
-        FirstName.sendKeys(faker.name().firstName());
+
+        String FakerFirstName=faker.name().firstName();
+        FirstName.sendKeys(FakerFirstName);
+        CustomerDummyDatabase.addDummyCustomerDB("FirstName",FakerFirstName);
+
         LastName.sendKeys(faker.name().lastName());
 
         driver.findElement(By.id("Gender_Male")).click();
 
         //Date
-
 
         driver.findElement(By.id("Company")).sendKeys(faker.company().name());
         driver.findElement(By.id("IsTaxExempt")).click();
@@ -106,7 +109,8 @@ public class GlueCodeImplementation {
     }
 
     public void searchCreatedCustomer() {
-        driver.findElement(By.id("SearchFirstName")).sendKeys("Virat");
+        driver.findElement(By.id("SearchFirstName")).sendKeys(CustomerDummyDatabase.getDummyCustomerDB("FirstName"));
+        driver.manage().timeouts().implicitlyWait(5,TimeUnit.SECONDS);
         driver.findElement(By.id("search-customers")).click();
         driver.findElement(By.xpath("(//a[normalize-space()='Edit'])[1]")).click();
         System.out.println("User search created customer - Completed");
@@ -121,6 +125,16 @@ public class GlueCodeImplementation {
         supportingMethods.saveCustomer(FirstName.getAttribute("value"),LastName.getAttribute("value"), Email.getAttribute("value"), "Admin");
         supportingMethods.closeDbConnection();
         System.out.println("User store data into database - Completed");
+    }
+
+    public void fetchDbExport() {
+        supportingMethods.createDbConnection();
+
+        ResultSet rs= supportingMethods.getCustomerData();
+        supportingMethods.createExcelFile(rs);
+
+        supportingMethods.closeDbConnection();
+        System.out.println("User fetch DB export for the newly created customer - Completed");
     }
 
     public void appLogout() {

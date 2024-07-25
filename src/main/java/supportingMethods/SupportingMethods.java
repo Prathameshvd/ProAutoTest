@@ -2,18 +2,16 @@ package supportingMethods;
 
 import com.esotericsoftware.yamlbeans.YamlException;
 import com.esotericsoftware.yamlbeans.YamlReader;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.yaml.snakeyaml.Yaml;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.io.*;
+import java.sql.*;
+import java.util.HashMap;
 import java.util.Map;
 
 public class SupportingMethods {
@@ -28,6 +26,7 @@ public class SupportingMethods {
 
     //To handle FileNotFoundException exception
     public SupportingMethods() throws FileNotFoundException {
+
     }
 
     //To setup driver
@@ -84,6 +83,38 @@ public class SupportingMethods {
             preparedStatement4.setString(4, Comment);
             preparedStatement4.execute();
             System.out.println("Customer details stored successfully");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public ResultSet getCustomerData() {
+
+        try {
+            PreparedStatement preparedStatement= con.prepareStatement("Select * from nopcommerce where First_Name=?");
+            preparedStatement.setString(1,CustomerDummyDatabase.getDummyCustomerDB("FirstName"));
+            ResultSet rs= preparedStatement.executeQuery();
+            return rs;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void createExcelFile(ResultSet rs) {
+        XSSFWorkbook workbook=new XSSFWorkbook();
+        XSSFSheet sheet= workbook.createSheet("NewCustomer");
+        try {
+            ResultSetMetaData resultSetMetaData= rs.getMetaData();
+            XSSFRow row= sheet.createRow(0);
+            int ColumnLength=row.getLastCellNum();
+
+
+            FileOutputStream fileOutputStream=new FileOutputStream(new File("resource/Customer.xlsx"));
+            workbook.write(fileOutputStream);
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
