@@ -24,6 +24,7 @@ public class GlueCodeImplementation {
 
     public WebDriver driver;
     public SupportingMethods supportingMethods;
+    public CustomerDummyDatabase customerDummyDatabase = new CustomerDummyDatabase();
 
     FileInputStream inputStream = new FileInputStream(new File("Config/Config.yml"));
     Yaml yaml = new Yaml();
@@ -85,7 +86,7 @@ public class GlueCodeImplementation {
 
         String FakerFirstName=faker.name().firstName();
         FirstName.sendKeys(FakerFirstName);
-        CustomerDummyDatabase.addDummyCustomerDB("FirstName",FakerFirstName);
+        customerDummyDatabase.addDummyCustomerDB("FirstName",FakerFirstName);
 
         LastName.sendKeys(faker.name().lastName());
 
@@ -109,7 +110,7 @@ public class GlueCodeImplementation {
     }
 
     public void searchCreatedCustomer() {
-        driver.findElement(By.id("SearchFirstName")).sendKeys(CustomerDummyDatabase.getDummyCustomerDB("FirstName"));
+        driver.findElement(By.id("SearchFirstName")).sendKeys(customerDummyDatabase.getDummyCustomerDB("FirstName"));
         driver.manage().timeouts().implicitlyWait(5,TimeUnit.SECONDS);
         driver.findElement(By.id("search-customers")).click();
         driver.findElement(By.xpath("(//a[normalize-space()='Edit'])[1]")).click();

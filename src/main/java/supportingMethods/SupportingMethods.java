@@ -2,6 +2,7 @@ package supportingMethods;
 
 import com.esotericsoftware.yamlbeans.YamlException;
 import com.esotericsoftware.yamlbeans.YamlReader;
+import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -11,11 +12,13 @@ import org.yaml.snakeyaml.Yaml;
 
 import java.io.*;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class SupportingMethods {
-
+    public CustomerDummyDatabase customerDummyDatabase = new CustomerDummyDatabase();
     public WebDriver driver;
     public Connection con;
 
@@ -92,8 +95,9 @@ public class SupportingMethods {
 
         try {
             PreparedStatement preparedStatement= con.prepareStatement("Select * from nopcommerce where First_Name=?");
-            preparedStatement.setString(1,CustomerDummyDatabase.getDummyCustomerDB("FirstName"));
+            preparedStatement.setString(1,customerDummyDatabase.getDummyCustomerDB("FirstName"));
             ResultSet rs= preparedStatement.executeQuery();
+            rs.next();
             return rs;
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -105,12 +109,35 @@ public class SupportingMethods {
         XSSFSheet sheet= workbook.createSheet("NewCustomer");
         try {
             ResultSetMetaData resultSetMetaData= rs.getMetaData();
-            XSSFRow row= sheet.createRow(0);
-            int ColumnLength=row.getLastCellNum();
-
-
-            FileOutputStream fileOutputStream=new FileOutputStream(new File("resource/Customer.xlsx"));
+            int ColumnCount = resultSetMetaData.getColumnCount();
+            List<Object> Header=new ArrayList<>();
+            for(int i=1; i<=ColumnCount; i++)
+            {
+                Header.add(resultSetMetaData.getColumnName(i));
+            }
+            XSSFRow HeaderRow = sheet.createRow(0);
+            for(int i=0; i<ColumnCount;i++) {
+                XSSFCell cell = HeaderRow.createCell(i);
+                cell.setCellValue(String.valueOf(Header.get(i)));
+            }
+            XSSFRow row;
+            XSSFCell cell;
+            int RowCount=1;
+            do {
+                row= sheet.createRow(RowCount++);
+                    int CellCount=1;
+                for(int i=0; i<ColumnCount;i++) {
+                    cell = row.createCell(i);
+                    System.out.print("  " + rs.getObject(CellCount));
+                    cell.setCellValue(String.valueOf(rs.getObject(CellCount)));
+                    CellCount++;
+                }
+            }while(rs.next());
+            FileOutputStream fileOutputStream=new FileOutputStream(new File("D:/LightWaitSW/IntelliJ IDEA/IdeaProjects/CucumberBasedProject/src/main/resources/Customer.xlsx"));
             workbook.write(fileOutputStream);
+            workbook.close();
+            System.out.println();
+            System.out.println("Data stored into excel file successfully");
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         } catch (IOException e) {
@@ -120,4 +147,3 @@ public class SupportingMethods {
         }
     }
 }
-

@@ -5,19 +5,20 @@ import java.util.Map;
 
 public class CustomerDummyDatabase {
 
-    static Map<String,String> DummyDatabase;
+    //Creating static so that all object will able to access same data
+    static Map<String,String> DummyDatabase = new HashMap<>();
 
-    CustomerDummyDatabase()
+    public CustomerDummyDatabase()
     {
-        DummyDatabase = new HashMap<>();
+
     }
 
-    public static void addDummyCustomerDB(String Key, String Value)
+    public void addDummyCustomerDB(String Key, String Value)
     {
         DummyDatabase.put(Key, Value);
     }
 
-    public static String getDummyCustomerDB(String Key)
+    public String getDummyCustomerDB(String Key)
     {
         return DummyDatabase.get(Key);
     }
