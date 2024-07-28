@@ -10,7 +10,7 @@ public class CustomerDummyDatabase {
 
     public CustomerDummyDatabase()
     {
-
+        DummyDatabase = new HashMap<>();
     }
 
     public void addDummyCustomerDB(String Key, String Value)

@@ -43,7 +43,12 @@ public class GlueCode {
 
     @Given("user edit searched customer")
     public void user_edit_searched_customer() {
-//        System.out.println("User edit searched customer");
+        glueCodeImplementation.editSearchedCustomer();
+    }
+
+    @Given("user take screenshot for newly created customer")
+    public void user_take_screenshot_for_newly_created_customer() {
+        glueCodeImplementation.takeScreenshotForCreatedCustomer();
     }
 
     @Given("user store data into database")

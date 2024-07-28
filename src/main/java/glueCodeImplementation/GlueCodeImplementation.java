@@ -58,12 +58,13 @@ public class GlueCodeImplementation {
 
     public void clickCustomerMenu() throws YamlException, FileNotFoundException {
 //        driver.findElement(By.xpath(supportingMethods.readAsObject("Cust"))).click();
-        driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         driver.findElement(By.xpath("//a[@href='#']//p[contains(text(),'Customers')]")).click();
         System.out.println("User click on Customer menu - Completed");
     }
 
     public void clickCustomersOption() {
+        System.out.println(driver.findElement(By.xpath("//a[@href='/Admin/Customer/List']//p[contains(text(),'Customers')]")).isEnabled());
         driver.findElement(By.xpath("//a[@href='/Admin/Customer/List']//p[contains(text(),'Customers')]")).click();
         System.out.println("User select Customers option - Completed");
     }
@@ -113,8 +114,27 @@ public class GlueCodeImplementation {
         driver.findElement(By.id("SearchFirstName")).sendKeys(customerDummyDatabase.getDummyCustomerDB("FirstName"));
         driver.manage().timeouts().implicitlyWait(5,TimeUnit.SECONDS);
         driver.findElement(By.id("search-customers")).click();
-        driver.findElement(By.xpath("(//a[normalize-space()='Edit'])[1]")).click();
         System.out.println("User search created customer - Completed");
+    }
+
+    public void editSearchedCustomer() {
+        driver.findElement(By.xpath("(//a[normalize-space()='Edit'])[1]")).click();
+
+        WebElement Email = driver.findElement(By.id("Email"));
+        Faker faker=new Faker();
+        FakeValuesService fakeValuesService = new FakeValuesService(new Locale("en-GB"), new RandomService());
+        String email = fakeValuesService.bothify("????##@gmail.com");
+        Email.clear();
+        Email.sendKeys(email);
+        System.out.println("Changed Email ID  : " + email);
+        customerDummyDatabase.addDummyCustomerDB("Email",email);
+
+        driver.findElement(By.id("Company")).clear();
+        driver.findElement(By.id("Company")).sendKeys(faker.company().name());
+        System.out.println("User edit searched customer - Completed");
+    }
+
+    public void takeScreenshotForCreatedCustomer() {
     }
 
     public void storeCustomerData()
@@ -125,22 +145,23 @@ public class GlueCodeImplementation {
         WebElement Email=driver.findElement(By.id("Email"));
         supportingMethods.saveCustomer(FirstName.getAttribute("value"),LastName.getAttribute("value"), Email.getAttribute("value"), "Admin");
         supportingMethods.closeDbConnection();
+        driver.findElement(By.xpath("//button[@name='save']")).click();
         System.out.println("User store data into database - Completed");
     }
 
     public void fetchDbExport() {
         supportingMethods.createDbConnection();
-
         ResultSet rs= supportingMethods.getCustomerData();
         supportingMethods.createExcelFile(rs);
-
         supportingMethods.closeDbConnection();
         System.out.println("User fetch DB export for the newly created customer - Completed");
     }
 
     public void appLogout() {
         driver.findElement(By.partialLinkText("Logo")).click();
+        driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
         driver.quit();
         System.out.println("User logout from website - Completed");
     }
+
 }

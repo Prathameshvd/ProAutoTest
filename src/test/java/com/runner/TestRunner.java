@@ -7,6 +7,7 @@ import org.junit.runner.RunWith;
 @RunWith(Cucumber.class)
 @CucumberOptions(
         features = "feature/Sample.feature"
+        ,tags = "@Create_save_edit_and_save_Customer"
         ,glue={"glueCode"}
         ,monochrome = false
 )

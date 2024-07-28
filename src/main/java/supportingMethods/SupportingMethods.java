@@ -6,6 +6,8 @@ import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.yaml.snakeyaml.Yaml;
@@ -145,5 +147,14 @@ public class SupportingMethods {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public void takeScreenShots()
+    {
+        TakesScreenshot takesScreenshot= (TakesScreenshot) driver;
+        File SourceFile = takesScreenshot.getScreenshotAs(OutputType.FILE);
+        StringBuffer NameOfFile = null;
+        NameOfFile.append(customerDummyDatabase.getDummyCustomerDB("FirstName"));
+        File TargetFile = new File("D:/LightWaitSW/IntelliJ IDEA/IdeaProjects/CucumberBasedProject/src/main/resources/Evidences/.png");
     }
 }
