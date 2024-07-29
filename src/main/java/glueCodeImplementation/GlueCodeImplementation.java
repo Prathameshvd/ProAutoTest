@@ -135,6 +135,7 @@ public class GlueCodeImplementation {
     }
 
     public void takeScreenshotForCreatedCustomer() {
+        supportingMethods.takeScreenShots();
     }
 
     public void storeCustomerData()

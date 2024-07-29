@@ -10,12 +10,14 @@ import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.edge.EdgeDriver;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.*;
 import java.sql.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -36,8 +38,14 @@ public class SupportingMethods {
 
     //To setup driver
     public WebDriver driverSetup() {
-        System.setProperty(data.get("DriverClassName"),data.get("DriverClassPath"));
-        driver=new ChromeDriver();
+        if(data.get("Browser").equalsIgnoreCase("Chrome")) {
+            System.setProperty(data.get("ChromeDriverClassName"), data.get("ChromeDriverClassPath"));
+            driver = new ChromeDriver();
+        }
+        else{
+            System.setProperty(data.get("EdgeDriverClassName"),data.get("EdgeDriverClassPath"));
+            driver=new EdgeDriver();
+        }
         return driver;
     }
 
@@ -153,8 +161,8 @@ public class SupportingMethods {
     {
         TakesScreenshot takesScreenshot= (TakesScreenshot) driver;
         File SourceFile = takesScreenshot.getScreenshotAs(OutputType.FILE);
-        StringBuffer NameOfFile = null;
+        StringBuffer NameOfFile = new StringBuffer();
         NameOfFile.append(customerDummyDatabase.getDummyCustomerDB("FirstName"));
-        File TargetFile = new File("D:/LightWaitSW/IntelliJ IDEA/IdeaProjects/CucumberBasedProject/src/main/resources/Evidences/.png");
+
     }
 }

@@ -1,5 +1,9 @@
-DriverClassName : webdriver.chrome.driver
-DriverClassPath : D:\\Prathamesh\\Selenium\\Supported_JarFiles\\chromedriver-win64\\chromedriver.exe
+Browser : Edge
+ChromeDriverClassName : webdriver.chrome.driver
+ChromeDriverClassPath : D:\\Prathamesh\\Selenium\\Supported_JarFiles\\chromedriver-win64\\chromedriver.exe
+
+EdgeDriverClassName : webdriver.edge.driver
+EdgeDriverClassPath : D:\\Prathamesh\\Selenium\\Supported_JarFiles\\msedgedriver.exe
 
 AppURL : https://admin-demo.nopcommerce.com/login
 UserName : admin@yourstore.com
