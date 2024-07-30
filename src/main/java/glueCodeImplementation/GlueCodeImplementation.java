@@ -10,11 +10,13 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 import org.yaml.snakeyaml.Yaml;
 import supportingMethods.CustomerDummyDatabase;
+import supportingMethods.ScreenshotAndCreateWordFile;
 import supportingMethods.SupportingMethods;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.sql.ResultSet;
 import java.util.Locale;
 import java.util.Map;
@@ -22,19 +24,20 @@ import java.util.concurrent.TimeUnit;
 
 public class GlueCodeImplementation {
 
-    public WebDriver driver;
-    public SupportingMethods supportingMethods;
+    public static WebDriver driver;
+    public SupportingMethods supportingMethods = new SupportingMethods();
     public CustomerDummyDatabase customerDummyDatabase = new CustomerDummyDatabase();
+    public ScreenshotAndCreateWordFile screenshotAndCreateWordFile = new ScreenshotAndCreateWordFile();
 
     FileInputStream inputStream = new FileInputStream(new File("Config/Config.yml"));
     Yaml yaml = new Yaml();
     Map<String, String> data = yaml.load(inputStream);
 
     public GlueCodeImplementation() throws FileNotFoundException {
+
     }
 
     public void appOpen() throws FileNotFoundException {
-        supportingMethods=new SupportingMethods();
         driver=supportingMethods.driverSetup();
         driver.manage().window().maximize();
         driver.get(data.get("AppURL"));
@@ -57,9 +60,9 @@ public class GlueCodeImplementation {
     }
 
     public void clickCustomerMenu() throws YamlException, FileNotFoundException {
-//        driver.findElement(By.xpath(supportingMethods.readAsObject("Cust"))).click();
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-        driver.findElement(By.xpath("//a[@href='#']//p[contains(text(),'Customers')]")).click();
+        driver.findElement(By.xpath(supportingMethods.readAsObject("Cust", "Customer"))).click();
+//        driver.findElement(By.xpath("//a[@href='#']//p[contains(text(),'Customers')]")).click();
         System.out.println("User click on Customer menu - Completed");
     }
 
@@ -134,8 +137,8 @@ public class GlueCodeImplementation {
         System.out.println("User edit searched customer - Completed");
     }
 
-    public void takeScreenshotForCreatedCustomer() {
-        supportingMethods.takeScreenShots();
+    public void takeScreenshotForCreatedCustomer() throws IOException {
+//        screenshotAndCreateWordFile.takeScreenShots();
     }
 
     public void storeCustomerData()
@@ -152,16 +155,15 @@ public class GlueCodeImplementation {
 
     public void fetchDbExport() {
         supportingMethods.createDbConnection();
-        ResultSet rs= supportingMethods.getCustomerData();
+        ResultSet rs= supportingMethods.getCustomerDataFromDatabase();
         supportingMethods.createExcelFile(rs);
         supportingMethods.closeDbConnection();
         System.out.println("User fetch DB export for the newly created customer - Completed");
     }
 
     public void appLogout() {
-        driver.findElement(By.partialLinkText("Logo")).click();
         driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
-        driver.quit();
+        driver.findElement(By.partialLinkText("Logo")).click();
         System.out.println("User logout from website - Completed");
     }
 

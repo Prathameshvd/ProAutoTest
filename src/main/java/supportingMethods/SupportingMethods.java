@@ -6,8 +6,8 @@ import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.TakesScreenshot;
+import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeDriver;
@@ -18,6 +18,7 @@ import java.sql.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -55,15 +56,12 @@ public class SupportingMethods {
 
     }
 
-    //Under development
-    public String readAsObject(String value) throws FileNotFoundException, YamlException {
+    //To get Xpath from Xpath.yml file
+    public String readAsObject(String Page, String Value) throws FileNotFoundException, YamlException {
         YamlReader yamlReader = new YamlReader(new FileReader("InputData/Xpath.yml"));
         Map read = (Map) yamlReader.read();
-
-        //This is still under development
-        System.out.println(read.entrySet());
-        System.out.println(read);
-        return (String) read.get(value);
+        Map<String, String> sub = (Map<String, String>) read.get(Page);
+        return (String) sub.get(Value);
     }
 
     //To Db Connection
@@ -101,7 +99,7 @@ public class SupportingMethods {
         }
     }
 
-    public ResultSet getCustomerData() {
+    public ResultSet getCustomerDataFromDatabase() {
 
         try {
             PreparedStatement preparedStatement= con.prepareStatement("Select * from nopcommerce where First_Name=?");
@@ -155,14 +153,5 @@ public class SupportingMethods {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    public void takeScreenShots()
-    {
-        TakesScreenshot takesScreenshot= (TakesScreenshot) driver;
-        File SourceFile = takesScreenshot.getScreenshotAs(OutputType.FILE);
-        StringBuffer NameOfFile = new StringBuffer();
-        NameOfFile.append(customerDummyDatabase.getDummyCustomerDB("FirstName"));
-
     }
 }

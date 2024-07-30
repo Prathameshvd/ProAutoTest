@@ -5,6 +5,7 @@ import glueCodeImplementation.GlueCodeImplementation;
 import io.cucumber.java.en.Given;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 
 public class GlueCode {
     GlueCodeImplementation glueCodeImplementation=new GlueCodeImplementation();
@@ -47,7 +48,7 @@ public class GlueCode {
     }
 
     @Given("user take screenshot for newly created customer")
-    public void user_take_screenshot_for_newly_created_customer() {
+    public void user_take_screenshot_for_newly_created_customer() throws IOException {
         glueCodeImplementation.takeScreenshotForCreatedCustomer();
     }
 
