@@ -9,7 +9,6 @@ And user select Customers option
 And user create new customer
 And user search created customer
 And user edit searched customer
-And user take screenshot for newly created customer
 And user store data into database
 And user fetch DB export for the newly created customer
 And user logout from website

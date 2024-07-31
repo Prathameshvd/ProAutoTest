@@ -29,10 +29,12 @@ public class GlueCodeImplementation {
     public CustomerDummyDatabase customerDummyDatabase = new CustomerDummyDatabase();
     public ScreenshotAndCreateWordFile screenshotAndCreateWordFile = new ScreenshotAndCreateWordFile();
 
+    //To fetch data from Config.yml
     FileInputStream inputStream = new FileInputStream(new File("Config/Config.yml"));
     Yaml yaml = new Yaml();
     Map<String, String> data = yaml.load(inputStream);
 
+    //Constructor
     public GlueCodeImplementation() throws FileNotFoundException {
 
     }
@@ -55,25 +57,22 @@ public class GlueCodeImplementation {
         Password.sendKeys(data.get("Password"));
 
         driver.findElement(By.className("button-1")).click();
-
         System.out.println("User login to website - Completed");
     }
 
     public void clickCustomerMenu() throws YamlException, FileNotFoundException {
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-        driver.findElement(By.xpath(supportingMethods.readAsObject("Cust", "Customer"))).click();
-//        driver.findElement(By.xpath("//a[@href='#']//p[contains(text(),'Customers')]")).click();
+        driver.findElement(By.xpath(supportingMethods.readAsObject("HomePage", "Customer"))).click();
         System.out.println("User click on Customer menu - Completed");
     }
 
-    public void clickCustomersOption() {
-        System.out.println(driver.findElement(By.xpath("//a[@href='/Admin/Customer/List']//p[contains(text(),'Customers')]")).isEnabled());
-        driver.findElement(By.xpath("//a[@href='/Admin/Customer/List']//p[contains(text(),'Customers')]")).click();
+    public void clickCustomersOption() throws YamlException, FileNotFoundException {
+        driver.findElement(By.xpath(supportingMethods.readAsObject("HomePage", "Customers"))).click();
         System.out.println("User select Customers option - Completed");
     }
 
-    public void createCustomer() {
-        driver.findElement(By.xpath("//a[normalize-space()='Add new']")).click();
+    public void createCustomer() throws YamlException, FileNotFoundException {
+        driver.findElement(By.xpath(supportingMethods.readAsObject("HomePage", "AddNew"))).click();
         WebElement Email = driver.findElement(By.id("Email"));
         WebElement Password = driver.findElement(By.id("Password"));
         WebElement FirstName = driver.findElement(By.id("FirstName"));
@@ -100,15 +99,17 @@ public class GlueCodeImplementation {
 
         driver.findElement(By.id("Company")).sendKeys(faker.company().name());
         driver.findElement(By.id("IsTaxExempt")).click();
-        driver.findElement(By.xpath("(//input[@role='searchbox'])[1]")).click();
+        driver.findElement(By.xpath(supportingMethods.readAsObject("AddNewCustomerPage", "CustomerRoll"))).click();
 
         //One thing have to select
 
         new Select(driver.findElement(By.id("VendorId"))).selectByValue("1");
-        driver.findElement(By.id("AdminComment")).sendKeys(faker.gameOfThrones().character());
 
         driver.findElement(By.id("Active")).click();
-        driver.findElement(By.xpath("//button[@name='save']")).click();
+
+        driver.findElement(By.id("AdminComment")).sendKeys(faker.gameOfThrones().character());
+
+        driver.findElement(By.xpath(supportingMethods.readAsObject("AddNewCustomerPage", "SaveCustomer"))).click();
 
         System.out.println("User create new customer - Completed");
     }
@@ -120,8 +121,8 @@ public class GlueCodeImplementation {
         System.out.println("User search created customer - Completed");
     }
 
-    public void editSearchedCustomer() {
-        driver.findElement(By.xpath("(//a[normalize-space()='Edit'])[1]")).click();
+    public void editSearchedCustomer() throws YamlException, FileNotFoundException {
+        driver.findElement(By.xpath(supportingMethods.readAsObject("EditCustomerPage", "EditButton"))).click();
 
         WebElement Email = driver.findElement(By.id("Email"));
         Faker faker=new Faker();
@@ -137,19 +138,14 @@ public class GlueCodeImplementation {
         System.out.println("User edit searched customer - Completed");
     }
 
-    public void takeScreenshotForCreatedCustomer() throws IOException {
-//        screenshotAndCreateWordFile.takeScreenShots();
-    }
-
-    public void storeCustomerData()
-    {
+    public void storeCustomerData() throws YamlException, FileNotFoundException {
         supportingMethods.createDbConnection();
         WebElement FirstName = driver.findElement(By.id("FirstName"));
         WebElement LastName = driver.findElement(By.id("LastName"));
         WebElement Email=driver.findElement(By.id("Email"));
         supportingMethods.saveCustomer(FirstName.getAttribute("value"),LastName.getAttribute("value"), Email.getAttribute("value"), "Admin");
         supportingMethods.closeDbConnection();
-        driver.findElement(By.xpath("//button[@name='save']")).click();
+        driver.findElement(By.xpath(supportingMethods.readAsObject("AddNewCustomerPage", "SaveCustomer"))).click();
         System.out.println("User store data into database - Completed");
     }
 
@@ -166,5 +162,4 @@ public class GlueCodeImplementation {
         driver.findElement(By.partialLinkText("Logo")).click();
         System.out.println("User logout from website - Completed");
     }
-
 }

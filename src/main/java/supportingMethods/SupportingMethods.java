@@ -50,12 +50,6 @@ public class SupportingMethods {
         return driver;
     }
 
-    //To select Data
-    public void selectDate(String SelectedDate)
-    {
-
-    }
-
     //To get Xpath from Xpath.yml file
     public String readAsObject(String Page, String Value) throws FileNotFoundException, YamlException {
         YamlReader yamlReader = new YamlReader(new FileReader("InputData/Xpath.yml"));
@@ -85,7 +79,8 @@ public class SupportingMethods {
         }
     }
 
-        public void saveCustomer(String FirstName, String LastName, String Email, String Comment) {
+    //To save data into Database
+    public void saveCustomer(String FirstName, String LastName, String Email, String Comment) {
         try {
             PreparedStatement preparedStatement4 = con.prepareStatement("Insert into nopcommerce (First_Name, Last_Name, Email, Additional_Details) Values (?,?,?,?)");
             preparedStatement4.setString(1, FirstName);
@@ -99,8 +94,8 @@ public class SupportingMethods {
         }
     }
 
+    //To get Data from Database
     public ResultSet getCustomerDataFromDatabase() {
-
         try {
             PreparedStatement preparedStatement= con.prepareStatement("Select * from nopcommerce where First_Name=?");
             preparedStatement.setString(1,customerDummyDatabase.getDummyCustomerDB("FirstName"));
@@ -112,6 +107,7 @@ public class SupportingMethods {
         }
     }
 
+    //To create excel report
     public void createExcelFile(ResultSet rs) {
         XSSFWorkbook workbook=new XSSFWorkbook();
         XSSFSheet sheet= workbook.createSheet("NewCustomer");

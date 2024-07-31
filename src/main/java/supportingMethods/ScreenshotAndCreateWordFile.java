@@ -42,8 +42,6 @@ public class ScreenshotAndCreateWordFile {
         StringBuilder FullPathOfFile = new StringBuilder().append(GeneralPath).append(customerDummyDatabase.getDummyCustomerDB("FirstName")).append(dtf.format(now)).append(".png");
         System.out.println("Full name of the file is :- " + FullPathOfFile);
         try {
-//            BufferedImage Image = new Robot().createScreenCapture(new Rectangle(Toolkit.getDefaultToolkit().getScreenSize()));
-//            ImageIO.write(Image,"png",new File(String.valueOf(FullPathOfFile)));
             TakesScreenshot takesScreenshot = (TakesScreenshot) driver;
             File SourceFile = takesScreenshot.getScreenshotAs(OutputType.FILE);
             File TargetFile = new File(String.valueOf(FullPathOfFile));

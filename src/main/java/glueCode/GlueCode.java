@@ -28,12 +28,12 @@ public class GlueCode {
     }
 
     @Given("user select Customers option")
-    public void user_select_customer_option() {
+    public void user_select_customer_option() throws YamlException, FileNotFoundException {
         glueCodeImplementation.clickCustomersOption();
     }
 
     @Given("user create new customer")
-    public void user_create_new_customer() {
+    public void user_create_new_customer() throws YamlException, FileNotFoundException {
         glueCodeImplementation.createCustomer();
     }
 
@@ -43,17 +43,12 @@ public class GlueCode {
     }
 
     @Given("user edit searched customer")
-    public void user_edit_searched_customer() {
+    public void user_edit_searched_customer() throws YamlException, FileNotFoundException {
         glueCodeImplementation.editSearchedCustomer();
     }
 
-    @Given("user take screenshot for newly created customer")
-    public void user_take_screenshot_for_newly_created_customer() throws IOException {
-        glueCodeImplementation.takeScreenshotForCreatedCustomer();
-    }
-
     @Given("user store data into database")
-    public void user_store_data_into_database() {
+    public void user_store_data_into_database() throws YamlException, FileNotFoundException {
         glueCodeImplementation.storeCustomerData();
     }
 
