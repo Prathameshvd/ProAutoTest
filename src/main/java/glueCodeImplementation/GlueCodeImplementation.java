@@ -4,9 +4,11 @@ import com.esotericsoftware.yamlbeans.YamlException;
 import com.github.javafaker.Faker;
 import com.github.javafaker.service.FakeValuesService;
 import com.github.javafaker.service.RandomService;
+import org.apache.logging.log4j.*;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.Select;
 import org.yaml.snakeyaml.Yaml;
 import supportingMethods.CustomerDummyDatabase;
@@ -28,6 +30,9 @@ public class GlueCodeImplementation {
     public SupportingMethods supportingMethods = new SupportingMethods();
     public CustomerDummyDatabase customerDummyDatabase = new CustomerDummyDatabase();
     public ScreenshotAndCreateWordFile screenshotAndCreateWordFile = new ScreenshotAndCreateWordFile();
+
+    @FindBy(xpath ="//a[@href='#']//p[contains(text(),'Customers')]")
+    public WebElement HomePageCustomer;
 
     //To fetch data from Config.yml
     FileInputStream inputStream = new FileInputStream(new File("Config/Config.yml"));
@@ -62,7 +67,9 @@ public class GlueCodeImplementation {
 
     public void clickCustomerMenu() throws YamlException, FileNotFoundException {
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-        driver.findElement(By.xpath(supportingMethods.readAsObject("HomePage", "Customer"))).click();
+//        driver.findElement(By.xpath(supportingMethods.readAsObject("HomePage", "Customer"))).click();
+        System.out.println(HomePageCustomer);
+        driver.findElement(By.xpath(String.valueOf(HomePageCustomer)));
         System.out.println("User click on Customer menu - Completed");
     }
 
