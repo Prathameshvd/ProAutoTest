@@ -9,16 +9,15 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.Select;
 import org.yaml.snakeyaml.Yaml;
 import supportingMethods.CustomerDummyDatabase;
 import supportingMethods.ScreenshotAndCreateWordFile;
 import supportingMethods.SupportingMethods;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.sql.ResultSet;
 import java.util.Locale;
 import java.util.Map;
@@ -31,9 +30,6 @@ public class GlueCodeImplementation {
     public CustomerDummyDatabase customerDummyDatabase = new CustomerDummyDatabase();
     public ScreenshotAndCreateWordFile screenshotAndCreateWordFile = new ScreenshotAndCreateWordFile();
 
-    @FindBy(xpath ="//a[@href='#']//p[contains(text(),'Customers')]")
-    public WebElement HomePageCustomer;
-
     //To fetch data from Config.yml
     FileInputStream inputStream = new FileInputStream(new File("Config/Config.yml"));
     Yaml yaml = new Yaml();
@@ -41,11 +37,11 @@ public class GlueCodeImplementation {
 
     //Constructor
     public GlueCodeImplementation() throws FileNotFoundException {
-
     }
 
     public void appOpen() throws FileNotFoundException {
         driver=supportingMethods.driverSetup();
+        PageFactory.initElements(driver, this);
         driver.manage().window().maximize();
         driver.get(data.get("AppURL"));
         System.out.println("User navigates to the website nopCommerce - Completed");
@@ -65,11 +61,12 @@ public class GlueCodeImplementation {
         System.out.println("User login to website - Completed");
     }
 
+    @FindBy(xpath ="//a[@href='#']//p[contains(text(),'Customers')]")
+    public WebElement HomePageCustomer;
     public void clickCustomerMenu() throws YamlException, FileNotFoundException {
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 //        driver.findElement(By.xpath(supportingMethods.readAsObject("HomePage", "Customer"))).click();
-        System.out.println(HomePageCustomer);
-        driver.findElement(By.xpath(String.valueOf(HomePageCustomer)));
+        HomePageCustomer.click();
         System.out.println("User click on Customer menu - Completed");
     }
 
@@ -164,9 +161,12 @@ public class GlueCodeImplementation {
         System.out.println("User fetch DB export for the newly created customer - Completed");
     }
 
+    @FindBy(xpath = "//a[normalize-space()='Add new']")
+    WebElement Logout;
     public void appLogout() {
         driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
-        driver.findElement(By.partialLinkText("Logo")).click();
+//        driver.findElement(By.partialLinkText("Logo")).click();
+        Logout.click();
         System.out.println("User logout from website - Completed");
     }
 }

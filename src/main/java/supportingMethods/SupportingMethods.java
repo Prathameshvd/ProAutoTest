@@ -6,21 +6,15 @@ import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.apache.poi.xwpf.usermodel.XWPFDocument;
-import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeDriver;
+import org.openqa.selenium.edge.EdgeOptions;
 import org.yaml.snakeyaml.Yaml;
-
 import java.io.*;
 import java.sql.*;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class SupportingMethods {
     public CustomerDummyDatabase customerDummyDatabase = new CustomerDummyDatabase();
@@ -37,15 +31,21 @@ public class SupportingMethods {
 
     }
 
-    //To setup driver
+    //To set up driver
     public WebDriver driverSetup() {
         if(data.get("Browser").equalsIgnoreCase("Chrome")) {
+            ChromeOptions chromeOptions =new ChromeOptions();
+            chromeOptions.setAcceptInsecureCerts(true);
+            chromeOptions.setExperimentalOption("excludeSwitches",new String[]{"enable-automation"});
             System.setProperty(data.get("ChromeDriverClassName"), data.get("ChromeDriverClassPath"));
-            driver = new ChromeDriver();
+            driver = new ChromeDriver(chromeOptions);
         }
         else{
             System.setProperty(data.get("EdgeDriverClassName"),data.get("EdgeDriverClassPath"));
-            driver=new EdgeDriver();
+            EdgeOptions edgeOptions = new EdgeOptions();
+            edgeOptions.setExperimentalOption("useAutomationExtension","false");
+            edgeOptions.setExperimentalOption("excludeSwitches", Collections.singletonList("enable-automation"));
+            driver=new EdgeDriver(edgeOptions);
         }
         return driver;
     }
