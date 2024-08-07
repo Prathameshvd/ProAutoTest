@@ -11,10 +11,16 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.edge.EdgeOptions;
+import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.yaml.snakeyaml.Yaml;
 import java.io.*;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.sql.*;
 import java.util.*;
+
+import static org.openqa.selenium.remote.DesiredCapabilities.*;
 
 public class SupportingMethods {
     public CustomerDummyDatabase customerDummyDatabase = new CustomerDummyDatabase();
@@ -33,20 +39,43 @@ public class SupportingMethods {
 
     //To set up driver
     public WebDriver driverSetup() {
-        if(data.get("Browser").equalsIgnoreCase("Chrome")) {
+        if((data.get("Browser").equalsIgnoreCase("Chrome")) && (data.get("Grid").equalsIgnoreCase("NoGrid"))) {
             ChromeOptions chromeOptions =new ChromeOptions();
             chromeOptions.setAcceptInsecureCerts(true);
             chromeOptions.setExperimentalOption("excludeSwitches",new String[]{"enable-automation"});
             System.setProperty(data.get("ChromeDriverClassName"), data.get("ChromeDriverClassPath"));
             driver = new ChromeDriver(chromeOptions);
         }
-        else{
+
+        if (data.get("Browser").equalsIgnoreCase("Edge") && (data.get("Grid").equalsIgnoreCase("NoGrid"))){
             System.setProperty(data.get("EdgeDriverClassName"),data.get("EdgeDriverClassPath"));
             EdgeOptions edgeOptions = new EdgeOptions();
             edgeOptions.setExperimentalOption("useAutomationExtension","false");
             edgeOptions.setExperimentalOption("excludeSwitches", Collections.singletonList("enable-automation"));
             driver=new EdgeDriver(edgeOptions);
         }
+
+        if(data.get("Browser").equalsIgnoreCase("Chrome") && data.get("Grid").equalsIgnoreCase("Grid")) {
+
+            System.setProperty(data.get("ChromeDriverClassName"), data.get("ChromeDriverClassPath"));
+            try {
+                new DesiredCapabilities();
+                URL GridUrl = new URL(data.get("GridURL"));
+                DesiredCapabilities desiredCapabilities = new DesiredCapabilities();
+                desiredCapabilities.setBrowserName("chrome");
+                ChromeOptions chromeOptions =new ChromeOptions();
+                chromeOptions.setAcceptInsecureCerts(true);
+                chromeOptions.setExperimentalOption("excludeSwitches",new String[]{"enable-automation"});
+                driver = new RemoteWebDriver(GridUrl,desiredCapabilities);
+            } catch (MalformedURLException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        else if (data.get("Browser").equalsIgnoreCase("Edge") && data.get("Grid").equalsIgnoreCase("Yes")){
+
+            driver=new EdgeDriver();
+        }
+
         return driver;
     }
 
