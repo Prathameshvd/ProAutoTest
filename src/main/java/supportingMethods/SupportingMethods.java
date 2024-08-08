@@ -59,11 +59,12 @@ public class SupportingMethods {
 
             System.setProperty(data.get("ChromeDriverClassName"), data.get("ChromeDriverClassPath"));
             try {
-                new DesiredCapabilities();
                 URL GridUrl = new URL(data.get("GridURL"));
                 DesiredCapabilities desiredCapabilities = new DesiredCapabilities();
                 desiredCapabilities.setBrowserName("chrome");
+
                 ChromeOptions chromeOptions =new ChromeOptions();
+                desiredCapabilities.merge(chromeOptions);
                 chromeOptions.setAcceptInsecureCerts(true);
                 chromeOptions.setExperimentalOption("excludeSwitches",new String[]{"enable-automation"});
                 driver = new RemoteWebDriver(GridUrl,desiredCapabilities);

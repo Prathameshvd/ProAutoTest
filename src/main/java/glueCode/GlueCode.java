@@ -14,7 +14,7 @@ public class GlueCode {
     }
 
     @Given("user navigates to the website nopCommerce")
-    public void user_navigates_to_the_website_nop_commerce() throws FileNotFoundException {
+    public void user_navigates_to_the_website_nop_commerce() throws FileNotFoundException, InterruptedException {
         glueCodeImplementation.appOpen();
     }
     @Given("user login to website")

@@ -10,6 +10,7 @@ import org.junit.runner.RunWith;
         ,tags = "@Create_save_edit_and_save_Customer"
         ,glue={"glueCode", "supportingMethods"}
         ,monochrome = false
+        ,plugin = {"pretty", "html:target/cucumber-reports.html"}
 )
 
 public class TestRunner {

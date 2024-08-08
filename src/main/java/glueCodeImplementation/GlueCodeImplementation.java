@@ -19,7 +19,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -41,10 +40,11 @@ public class GlueCodeImplementation {
     public GlueCodeImplementation() throws FileNotFoundException {
     }
 
-    public void appOpen() throws FileNotFoundException {
+    public void appOpen() throws FileNotFoundException, InterruptedException {
         driver=supportingMethods.driverSetup();
         PageFactory.initElements(driver, this);
         driver.manage().window().maximize();
+        driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
         driver.get(data.get("AppURL"));
         logger.info("AppURL opened successfully");
         System.out.println("User navigates to the website nopCommerce - Completed");
