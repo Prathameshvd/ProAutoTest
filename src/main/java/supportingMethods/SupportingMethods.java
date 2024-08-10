@@ -43,13 +43,47 @@ public class SupportingMethods {
             ChromeOptions chromeOptions =new ChromeOptions();
             chromeOptions.setAcceptInsecureCerts(true);
             chromeOptions.setExperimentalOption("excludeSwitches",new String[]{"enable-automation"});
+            chromeOptions.addArguments("--incognito");
             System.setProperty(data.get("ChromeDriverClassName"), data.get("ChromeDriverClassPath"));
             driver = new ChromeDriver(chromeOptions);
         }
 
         if (data.get("Browser").equalsIgnoreCase("Edge") && (data.get("Grid").equalsIgnoreCase("NoGrid"))){
             System.setProperty(data.get("EdgeDriverClassName"),data.get("EdgeDriverClassPath"));
+
+            String zipPath = "D:/LightWaitSW/Extensions/buster-main.zip";
+            File extractedDir = new File("D:/LightWaitSW/Extensions");
+
+            // Extract the .zip file if it hasn't been extracted yet
+            if (!extractedDir.exists()) {
+                try (java.util.zip.ZipFile zipFile = new java.util.zip.ZipFile(zipPath)) {
+                    zipFile.stream().forEach(entry -> {
+                        try {
+                            File entryDestination = new File(extractedDir, entry.getName());
+                            if (entry.isDirectory()) {
+                                entryDestination.mkdirs();
+                            } else {
+                                entryDestination.getParentFile().mkdirs();
+                                try (java.io.InputStream in = zipFile.getInputStream(entry);
+                                     java.io.OutputStream out = new java.io.FileOutputStream(entryDestination)) {
+                                    byte[] buffer = new byte[1024];
+                                    int len;
+                                    while ((len = in.read(buffer)) != -1) {
+                                        out.write(buffer, 0, len);
+                                    }
+                                }
+                            }
+                        } catch (java.io.IOException e) {
+                            e.printStackTrace();
+                        }
+                    });
+                } catch (java.io.IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
             EdgeOptions edgeOptions = new EdgeOptions();
+            edgeOptions.addArguments("--load-extension=" + extractedDir.getAbsolutePath());
             edgeOptions.setExperimentalOption("useAutomationExtension","false");
             edgeOptions.setExperimentalOption("excludeSwitches", Collections.singletonList("enable-automation"));
             driver=new EdgeDriver(edgeOptions);
