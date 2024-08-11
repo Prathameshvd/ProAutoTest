@@ -20,8 +20,6 @@ import java.net.URL;
 import java.sql.*;
 import java.util.*;
 
-import static org.openqa.selenium.remote.DesiredCapabilities.*;
-
 public class SupportingMethods {
     public CustomerDummyDatabase customerDummyDatabase = new CustomerDummyDatabase();
     public WebDriver driver;
@@ -34,7 +32,6 @@ public class SupportingMethods {
 
     //To handle FileNotFoundException exception
     public SupportingMethods() throws FileNotFoundException {
-
     }
 
     //To set up driver
@@ -50,47 +47,13 @@ public class SupportingMethods {
 
         if (data.get("Browser").equalsIgnoreCase("Edge") && (data.get("Grid").equalsIgnoreCase("NoGrid"))){
             System.setProperty(data.get("EdgeDriverClassName"),data.get("EdgeDriverClassPath"));
-
-            String zipPath = "D:/LightWaitSW/Extensions/buster-main.zip";
-            File extractedDir = new File("D:/LightWaitSW/Extensions");
-
-            // Extract the .zip file if it hasn't been extracted yet
-            if (!extractedDir.exists()) {
-                try (java.util.zip.ZipFile zipFile = new java.util.zip.ZipFile(zipPath)) {
-                    zipFile.stream().forEach(entry -> {
-                        try {
-                            File entryDestination = new File(extractedDir, entry.getName());
-                            if (entry.isDirectory()) {
-                                entryDestination.mkdirs();
-                            } else {
-                                entryDestination.getParentFile().mkdirs();
-                                try (java.io.InputStream in = zipFile.getInputStream(entry);
-                                     java.io.OutputStream out = new java.io.FileOutputStream(entryDestination)) {
-                                    byte[] buffer = new byte[1024];
-                                    int len;
-                                    while ((len = in.read(buffer)) != -1) {
-                                        out.write(buffer, 0, len);
-                                    }
-                                }
-                            }
-                        } catch (java.io.IOException e) {
-                            e.printStackTrace();
-                        }
-                    });
-                } catch (java.io.IOException e) {
-                    e.printStackTrace();
-                }
-            }
-
             EdgeOptions edgeOptions = new EdgeOptions();
-            edgeOptions.addArguments("--load-extension=" + extractedDir.getAbsolutePath());
             edgeOptions.setExperimentalOption("useAutomationExtension","false");
             edgeOptions.setExperimentalOption("excludeSwitches", Collections.singletonList("enable-automation"));
             driver=new EdgeDriver(edgeOptions);
         }
 
         if(data.get("Browser").equalsIgnoreCase("Chrome") && data.get("Grid").equalsIgnoreCase("Grid")) {
-
             System.setProperty(data.get("ChromeDriverClassName"), data.get("ChromeDriverClassPath"));
             try {
                 URL GridUrl = new URL(data.get("GridURL"));
@@ -107,10 +70,8 @@ public class SupportingMethods {
             }
         }
         else if (data.get("Browser").equalsIgnoreCase("Edge") && data.get("Grid").equalsIgnoreCase("Yes")){
-
             driver=new EdgeDriver();
         }
-
         return driver;
     }
 
@@ -206,11 +167,7 @@ public class SupportingMethods {
             workbook.close();
             System.out.println();
             System.out.println("Data stored into excel file successfully");
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        } catch (SQLException e) {
+        } catch (IOException | SQLException e) {
             throw new RuntimeException(e);
         }
     }

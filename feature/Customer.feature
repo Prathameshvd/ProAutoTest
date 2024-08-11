@@ -1,4 +1,4 @@
-Feature: Login
+Feature: To validate Customer testing
 
 @Create_save_edit_and_save_Customer
 Scenario: To create, search, edit and save customer.

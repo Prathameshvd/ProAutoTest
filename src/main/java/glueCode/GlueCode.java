@@ -3,9 +3,8 @@ package glueCode;
 import com.esotericsoftware.yamlbeans.YamlException;
 import glueCodeImplementation.GlueCodeImplementation;
 import io.cucumber.java.en.Given;
-
 import java.io.FileNotFoundException;
-import java.io.IOException;
+
 
 public class GlueCode {
     GlueCodeImplementation glueCodeImplementation=new GlueCodeImplementation();
