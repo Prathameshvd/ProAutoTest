@@ -2,6 +2,8 @@ package supportingMethods;
 
 import com.esotericsoftware.yamlbeans.YamlException;
 import com.esotericsoftware.yamlbeans.YamlReader;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -24,6 +26,7 @@ public class SupportingMethods {
     public CustomerDummyDatabase customerDummyDatabase = new CustomerDummyDatabase();
     public WebDriver driver;
     public Connection con;
+    public Logger logger = LogManager.getLogger(this.getClass());
 
     //To load data from the Config YAML file
     FileInputStream inputStream = new FileInputStream(new File("Config/Config.yml"));
@@ -88,7 +91,10 @@ public class SupportingMethods {
         try {
             con= DriverManager.getConnection(data.get("DBurl"), data.get("DBUserName"), data.get("DBPassword"));
             String temp = con==null ? "JDBC Connection unsuccessful !" : "JDBC Connection Successfully !";
-            System.out.println(temp);
+            if (con==null)
+                logger.error("JDBC Connection unsuccessful !");
+            else
+                logger.info("JDBC Connection Successfully !");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -99,6 +105,7 @@ public class SupportingMethods {
         try {
             con.close();
             System.out.println("JDBC Connection Closed Successfully");
+            logger.info("JDBC Connection Closed Successfully");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -114,6 +121,7 @@ public class SupportingMethods {
             preparedStatement4.setString(4, Comment);
             preparedStatement4.execute();
             System.out.println("Customer details stored successfully");
+            logger.info("Data inserted into database successfully");
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -126,6 +134,7 @@ public class SupportingMethods {
             preparedStatement.setString(1,customerDummyDatabase.getDummyCustomerDB("FirstName"));
             ResultSet rs= preparedStatement.executeQuery();
             rs.next();
+            logger.info("Data fetched from database successfully");
             return rs;
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -165,7 +174,7 @@ public class SupportingMethods {
             FileOutputStream fileOutputStream=new FileOutputStream(new File("D:/LightWaitSW/IntelliJ IDEA/IdeaProjects/CucumberBasedProject/src/main/resources/Customer.xlsx"));
             workbook.write(fileOutputStream);
             workbook.close();
-            System.out.println();
+            logger.info("Data stored into excel successfully");
             System.out.println("Data stored into excel file successfully");
         } catch (IOException | SQLException e) {
             throw new RuntimeException(e);

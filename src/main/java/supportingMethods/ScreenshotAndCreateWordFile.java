@@ -3,6 +3,8 @@ package supportingMethods;
 import io.cucumber.java.After;
 import io.cucumber.java.AfterStep;
 import io.cucumber.java.Before;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.util.Units;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
@@ -21,10 +23,12 @@ public class ScreenshotAndCreateWordFile {
     static XWPFRun run;
     static FileOutputStream fileOutputStream;
     String GeneralPath="D:/LightWaitSW/IntelliJ IDEA/IdeaProjects/CucumberBasedProject/src/main/resources/Evidences/";
+    public Logger logger = LogManager.getLogger(this.getClass());
 
     @Before
     public void openDocumentAndIOStreams() {
         System.out.println("====================Before====================");
+        logger.info("====================Test case execution started====================");
         document = new XWPFDocument();
         run = document.createParagraph().createRun();
         System.out.println(run);
@@ -64,5 +68,6 @@ public class ScreenshotAndCreateWordFile {
         fileOutputStream.close();
         document.close();
         driver.quit();
+        logger.info("====================Test case execution ends====================");
     }
 }
